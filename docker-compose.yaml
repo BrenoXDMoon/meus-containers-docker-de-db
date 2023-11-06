@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  db_mysql:
+    build:
+      context: .
+      dockerfile: Dockerfile_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: senha_forte
+      MYSQL_DATABASE: test
+      MYSQL_ROOT_HOST: '%'
+    ports:
+      - '3306:3306'
+    volumes:
+      - meu/diretorio/local:/var/lib/mysql

@@ -1,0 +1,1 @@
+docker run -d --name db_mysql -e MYSQL_ROOT_PASSWORD=senha_forte -e MYSQL_DATABASE=test -e MYSQL_ROOT_HOST=% -v meu/diretorio/local:/var/lib/mysql -p 3306:3306 mysql:latest --default-authentication-plugin=mysql_native_password
