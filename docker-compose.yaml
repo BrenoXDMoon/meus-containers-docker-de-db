@@ -2,9 +2,7 @@ version: '3.8'
 
 services:
   db_mysql:
-    build:
-      context: .
-      dockerfile: Dockerfile_mysql
+    image: mysql:latest
     environment:
       MYSQL_ROOT_PASSWORD: senha_forte
       MYSQL_DATABASE: test
@@ -12,4 +10,14 @@ services:
     ports:
       - '3306:3306'
     volumes:
-      - meu/diretorio/local:/var/lib/mysql
+      - C:\Users\breno\Documentos\Docker\Volumes\DB\mysql:/var/lib/mysql
+  db_postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: test
+    ports:
+      - '5432:5432'
+    volumes:
+      - C:\Users\breno\Documentos\Docker\Volumes\DB\postgres:/var/lib/postgresql/data
