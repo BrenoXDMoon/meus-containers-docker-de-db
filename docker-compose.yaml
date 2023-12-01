@@ -4,9 +4,9 @@ services:
   db_mysql:
     image: mysql:latest
     environment:
-      MYSQL_ROOT_PASSWORD: senha_forte
+      MYSQL_ROOT_PASSWORD: 1234
       MYSQL_DATABASE: test
-      MYSQL_ROOT_HOST: '%'
+      MYSQL_ROOT_HOST: root
     ports:
       - '3306:3306'
     volumes:
