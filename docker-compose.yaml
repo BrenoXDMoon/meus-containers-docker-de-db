@@ -10,14 +10,50 @@ services:
     ports:
       - '3306:3306'
     volumes:
-      - C:\Users\breno\Documentos\Docker\Volumes\DB\mysql:/var/lib/mysql
-  db_postgres:
-    image: postgres:latest
-    environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: 1234
-      POSTGRES_DB: test
+      - 'C:/Users/breno/Documentos/Docker/Volumes/DB/mysql:/var/lib/mysql'
+
+  rabbit_mq:
+    image: rabbitmq:3-management
     ports:
-      - '5432:5432'
+      - '25672:25672' # (erlang) communication between the nodes and CLI tool
+      - '15672:15672' # communication with the web management API
+
     volumes:
-      - C:\Users\breno\Documentos\Docker\Volumes\DB\postgres:/var/lib/postgresql/data
+      - /docker_conf/rabbitmq/data/:/var/lib/rabbitmq/
+
+    environment:
+      - 'RABBITMQ_DEFAULT_USER = admin'
+      - 'RABBITMQ_DEFAULT_PASS = 1234'
+
+    restart: always
+
+  redis:
+    image: redis:6.2-alpine
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    volumes:
+      - redis_data:/data
+
+  redis_restarted:
+    image: docker:cli
+    restart: unless-stopped
+    volumes: [ "/var/run/docker.sock:/var/run/docker.sock" ]
+    entrypoint: [ "/bin/sh", "-c" ]
+    command:
+      - |
+        while true; do
+          if [ "$$(date +'%u')" = '1' ]; then
+            docker restart redis
+          fi
+          sleep 86400
+        done
+
+volumes:
+  redis_data:
+    driver: local
+
+  logs-folder:
+    name: log_rabbitmq
+    driver: local
