@@ -10,7 +10,7 @@ services:
     ports:
       - '3306:3306'
     volumes:
-      - 'C:/Users/breno/Documentos/Docker/Volumes/DB/mysql:/var/lib/mysql'
+      - 'C:/Users/breno/Documents/Docker/Volumes/DB/mysql:/var/lib/mysql'
 
   rabbit_mq:
     image: rabbitmq:3-management
@@ -36,19 +36,15 @@ services:
     volumes:
       - redis_data:/data
 
-  redis_restarted:
-    image: docker:cli
-    restart: unless-stopped
-    volumes: [ "/var/run/docker.sock:/var/run/docker.sock" ]
-    entrypoint: [ "/bin/sh", "-c" ]
-    command:
-      - |
-        while true; do
-          if [ "$$(date +'%u')" = '1' ]; then
-            docker restart redis
-          fi
-          sleep 86400
-        done
+  mongodb:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 1234
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongodb_data:/data/db
 
 volumes:
   redis_data:
@@ -56,4 +52,7 @@ volumes:
 
   logs-folder:
     name: log_rabbitmq
+    driver: local
+
+  mongodb_data:
     driver: local
