@@ -21,7 +21,7 @@ services:
     image: rabbitmq:3-management
     container_name: rabbitmq_container
     ports:
-      - '25672:25672'
+      - '5672:5672'
       - '15672:15672'
     environment:
       RABBITMQ_DEFAULT_USER: admin
@@ -70,7 +70,7 @@ services:
       KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
       KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
       KAFKA_CFG_CONTROLLER_LISTENER_NAMES: CONTROLLER
-      KAFKA_KRAFT_CLUSTER_ID: xJSAUCkQTEmyCJZ9MXUWyA  # UUID fixo, pode gerar outro se quiser
+      KAFKA_KRAFT_CLUSTER_ID: xJSAUCkQTEmyCJZ9MXUWyA
     volumes:
       - kafka_data:/bitnami/kafka
     networks:
